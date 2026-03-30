@@ -1,0 +1,39 @@
+{
+    "private": true,
+    "main": "expo-router/entry",
+    "dependencies": {
+        "es-toolkit": "^1.45.1",
+        "expo": "~55.0.9",
+        "expo-constants": "~55.0.9",
+        "expo-linking": "~55.0.9",
+        "expo-localization": "^55.0.9",
+        "expo-router": "~55.0.8",
+        "expo-status-bar": "~55.0.4",
+        "intlayer": "^8.6.0",
+        "lucide-react-native": "^1.7.0",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0",
+        "react-intlayer": "^8.6.0",
+        "react-native": "~0.83.4",
+        "react-native-safe-area-context": "~5.6.2",
+        "react-native-screens": "~4.23.0",
+        "react-native-web": "~0.21.2",
+        "styled-components": "^6.3.12"
+    },
+    "devDependencies": {
+        "@apst/biome": "~0.3.1",
+        "@apst/tsconfig": "~0.3.0",
+        "@babel/preset-env": "^7.29.2",
+        "@biomejs/biome": "^2.4.9",
+        "@types/babel-core": "^6.25.10",
+        "@types/node": "^25.5.0",
+        "@types/react": "^19.2.14",
+        "babel-core": "^6.26.3",
+        "core-js": "^3.49.0",
+        "expo-build-properties": "^55.0.10",
+        "react-native-intlayer": "^8.6.0",
+        "serve": "^14.2.6",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.9.3"
+    }
+}

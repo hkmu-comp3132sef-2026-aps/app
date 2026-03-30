@@ -1,0 +1,23 @@
+# Caches
+__MACOSX/
+.DS_Store
+
+# Modules
+node_modules/
+
+# Expo
+.expo/
+expo-env.d.ts
+
+# Intlayer
+.intlayer
+
+# Builds
+dist/
+
+# TypeScript
+*.tsbuildinfo
+
+# Logs
+*.log
+pnpm-debug.log*
