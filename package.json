@@ -1,6 +1,6 @@
 {
     "private": true,
-    "main": "expo-router/entry",
+    "main": "./src/index.ts",
     "dependencies": {
         "core-js": "^3.49.0",
         "es-toolkit": "^1.45.1",
@@ -21,6 +21,7 @@
         "react-native-screens": "~4.23.0",
         "react-native-svg": "^15.15.3",
         "react-native-web": "~0.21.2",
+        "regenerator-runtime": "~0.14.1",
         "styled-components": "^6.3.12"
     },
     "devDependencies": {

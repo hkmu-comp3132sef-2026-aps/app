@@ -103,6 +103,9 @@ clean:
 clean-all-linux:
     just clean
 
+    rm -rf ./expo-env.d.ts
+    rm -rf ./.expo
+    rm -rf ./.intlayer
     rm -rf ./node_modules
 
 # Clean everything (macOS)
@@ -113,6 +116,9 @@ clean-all-macos:
 clean-all-windows:
     just clean
 
+    Remove-Item -Recurse -Force ./expo-env.d.ts
+    Remove-Item -Recurse -Force ./.expo
+    Remove-Item -Recurse -Force ./.intlayer
     Remove-Item -Recurse -Force ./node_modules
 
 # Clean everything

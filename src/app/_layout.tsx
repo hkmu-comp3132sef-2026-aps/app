@@ -1,6 +1,3 @@
-// import 'regenerator-runtime/runtime';
-import "core-js/stable";
-
 import type * as React from "react";
 
 import type { Colors } from "#/hooks/colors";
