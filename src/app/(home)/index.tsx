@@ -3,5 +3,11 @@ import type * as React from "react";
 import { HomeMap } from "#/modules/home/components/map";
 
 export default (): React.JSX.Element => {
-    return <HomeMap />;
+    const onClick = (id: string): void => {
+        console.log({
+            id,
+        });
+    };
+
+    return <HomeMap onClick={onClick} />;
 };

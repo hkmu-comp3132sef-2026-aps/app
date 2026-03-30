@@ -3,7 +3,7 @@
 import "maplibre-gl/dist/maplibre-gl.css";
 
 import type { DOMProps } from "expo/dom";
-import type { LayerProps } from "react-map-gl/maplibre";
+import type { LayerProps, MapLayerMouseEvent } from "react-map-gl/maplibre";
 
 import type {
     Maybe,
@@ -23,6 +23,7 @@ import { useLazyQuery } from "#/graphql";
 import { useColors } from "#/hooks/colors";
 
 type MapProps = {
+    onClick: (id: string) => void;
     dom?: DOMProps;
 };
 
@@ -39,10 +40,15 @@ const MAP_STYLES = {
 
 const PAGE_LOAD_DELAY_MS = 64 as const;
 const SCHOOLS_PAGE_SIZE = 500 as const;
+const POINT_LAYER_ID = "point" as const;
+
+type MapFeatureProperties = {
+    schoolId: string;
+};
 
 type MapFeature = {
     type: "Feature";
-    properties: object;
+    properties: MapFeatureProperties;
     geometry: {
         type: "Point";
         coordinates: [
@@ -97,12 +103,15 @@ const createEmptyPaginationState = (): PaginationState => {
 };
 
 const createPointFeature = (
+    schoolId: string,
     longitude: number,
     latitude: number,
 ): MapFeature => {
     return {
         type: "Feature",
-        properties: {},
+        properties: {
+            schoolId,
+        },
         geometry: {
             type: "Point",
             coordinates: [
@@ -144,14 +153,19 @@ const getSchoolsPageData = (
 
         if (!edge) continue;
 
+        const schoolId: Maybe<string> | undefined = edge.node?.school_id;
         const longitude: Maybe<number> | undefined = edge.node?.longitude;
         const latitude: Maybe<number> | undefined = edge.node?.latitude;
 
-        if (typeof longitude !== "number" || typeof latitude !== "number") {
+        if (
+            typeof schoolId !== "string" ||
+            typeof longitude !== "number" ||
+            typeof latitude !== "number"
+        ) {
             continue;
         }
 
-        features.push(createPointFeature(longitude, latitude));
+        features.push(createPointFeature(schoolId, longitude, latitude));
     }
 
     return {
@@ -168,12 +182,12 @@ const getSchoolsPageData = (
     };
 };
 
-const HomeMap = (): React.JSX.Element => {
+const HomeMap = (props: MapProps): React.JSX.Element => {
     const { theme } = useThemeContext();
 
     const colors: Colors = useColors();
 
-    const schoolLang = getSchoolLang();
+    const schoolLang: SchoolLang = getSchoolLang();
 
     const requestVersionRef = React.useRef(0);
 
@@ -185,6 +199,8 @@ const HomeMap = (): React.JSX.Element => {
         createEmptyPaginationState,
     );
 
+    const [isPointHovered, setIsPointHovered] = React.useState(false);
+
     const [loadSchoolsPage, { error, isLoading }] = useLazyQuery(
         getSchoolsPageData,
         {
@@ -194,7 +210,7 @@ const HomeMap = (): React.JSX.Element => {
     );
 
     const layerProps: LayerProps = {
-        id: "point",
+        id: POINT_LAYER_ID,
         type: "circle",
         paint: {
             "circle-radius": 5,
@@ -233,6 +249,14 @@ const HomeMap = (): React.JSX.Element => {
         },
     );
 
+    const handleMapClick = (event: MapLayerMouseEvent): void => {
+        const schoolId = event.features?.[0]?.properties?.schoolId;
+
+        if (typeof schoolId !== "string") return void 0;
+
+        props.onClick(schoolId);
+    };
+
     const loadPage = React.useEffectEvent(
         async (
             after: string | undefined,
@@ -262,12 +286,12 @@ const HomeMap = (): React.JSX.Element => {
 
         const requestVersion = requestVersionRef.current;
 
-        React.startTransition(() => {
+        React.startTransition((): void => {
             setSourceData(createEmptySourceData());
             setPagination(createEmptyPaginationState());
         });
 
-        loadPage(undefined, true, requestVersion);
+        loadPage(void 0, true, requestVersion);
 
         return (): void => {
             requestVersionRef.current += 1;
@@ -307,10 +331,21 @@ const HomeMap = (): React.JSX.Element => {
                     width: "100%",
                     height: "100%",
                 }}
+                interactiveLayerIds={[
+                    POINT_LAYER_ID,
+                ]}
                 initialViewState={INITIAL_VIEW_STATE}
                 mapStyle={
                     theme === "light" ? MAP_STYLES.light : MAP_STYLES.dark
                 }
+                cursor={isPointHovered ? "pointer" : "auto"}
+                onClick={handleMapClick}
+                onMouseEnter={(): void => {
+                    setIsPointHovered(true);
+                }}
+                onMouseLeave={(): void => {
+                    setIsPointHovered(false);
+                }}
             >
                 <Source
                     id="schools"
