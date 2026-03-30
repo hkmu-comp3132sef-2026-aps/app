@@ -10,7 +10,7 @@ type ThemeMode = Theme | "system";
 type ThemeContextType = {
     theme: Theme;
     mode: ThemeMode;
-    setThemeMode: (mode: ThemeMode) => void;
+    setMode: (mode: ThemeMode) => void;
 };
 
 const ThemeContext = React.createContext<ThemeContextType | null>(null);
@@ -20,37 +20,16 @@ const ThemeContextProvider = ({
 }: React.PropsWithChildren): React.JSX.Element => {
     const colorScheme: ColorSchemeName = useColorScheme();
 
-    const [theme, setTheme] = React.useState<Theme>("light");
     const [mode, setMode] = React.useState<ThemeMode>("system");
-
-    const setThemeMode = (themeMode: ThemeMode): void => {
-        // light / dark
-        if (themeMode !== "system") {
-            setTheme(themeMode);
-            setMode(themeMode);
-            return void 0;
-        }
-
-        // system
-
-        setMode(themeMode);
-
-        // system dark
-        if (colorScheme === "dark") {
-            setTheme("dark");
-            return void 0;
-        }
-
-        // system light
-        setTheme("light");
-    };
+    const theme: Theme =
+        mode === "system" ? (colorScheme === "dark" ? "dark" : "light") : mode;
 
     return (
         <ThemeContext.Provider
             value={{
                 theme,
                 mode,
-                setThemeMode,
+                setMode,
             }}
         >
             {children}

@@ -16,12 +16,12 @@ type ThemeBlockProps = {
 const ThemeBlock = (props: ThemeBlockProps): React.JSX.Element => {
     const colors: Colors = useColors();
 
-    const { setThemeMode } = useThemeContext();
+    const { setMode } = useThemeContext();
 
     return (
         <Option
             $colors={colors}
-            onPress={(): void => setThemeMode(props.value)}
+            onPress={(): void => setMode(props.value)}
             style={({ pressed }): ViewStyle[] => [
                 {
                     backgroundColor: pressed ? colors.bg3 : "transparent",

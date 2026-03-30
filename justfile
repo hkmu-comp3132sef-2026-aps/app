@@ -3,6 +3,7 @@ set windows-shell := ["pwsh", "-Command"]
 
 tsc := "pnpm exec tsc"
 biome := "pnpm exec biome"
+gqty := "pnpm exec gqty"
 intlayer := "pnpm exec intlayer"
 expo := "pnpm exec expo"
 eas := "pnpm exec eas"
@@ -28,9 +29,22 @@ fix:
 up:
     pnpm up --interactive --latest --recursive
 
+# Prepare gqty
+gqty:
+    {{gqty}} \
+        --react \
+        --target ./.gqty/index.ts \
+        --typescript \
+        https://sch-api.alpheus.day/graphql
+
+# Prepare intlayer
+int:
+    {{intlayer}} build
+
 # Prepare dependencies
 pre:
-    {{intlayer}} build
+    just gqty
+    just int
 
 # Format code
 fmt:
@@ -106,6 +120,7 @@ clean-all-linux:
     rm -rf ./expo-env.d.ts
     rm -rf ./.expo
     rm -rf ./.intlayer
+    rm -rf ./.gqty
     rm -rf ./node_modules
 
 # Clean everything (macOS)
@@ -119,6 +134,7 @@ clean-all-windows:
     Remove-Item -Recurse -Force ./expo-env.d.ts
     Remove-Item -Recurse -Force ./.expo
     Remove-Item -Recurse -Force ./.intlayer
+    Remove-Item -Recurse -Force ./.gqty
     Remove-Item -Recurse -Force ./node_modules
 
 # Clean everything

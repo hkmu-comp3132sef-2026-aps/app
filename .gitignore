@@ -9,8 +9,11 @@ node_modules/
 .expo/
 expo-env.d.ts
 
+# GraphQL
+.gqty/
+
 # Intlayer
-.intlayer
+.intlayer/
 
 # Builds
 dist/

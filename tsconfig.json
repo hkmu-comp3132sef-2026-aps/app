@@ -6,6 +6,9 @@
             "#/*": [
                 "./src/*"
             ],
+            "#/graphql": [
+                "./.gqty/index.ts"
+            ],
             "@intlayer/dictionaries-entry": [
                 "./.intlayer/main/dictionaries.mjs"
             ],
