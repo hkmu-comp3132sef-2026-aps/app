@@ -8,7 +8,7 @@ const colorsLight = {
     bg5: "#d9d9d9",
     text: "#111",
     textSecondary: "#666",
-    accent: "#4f46e5",
+    accent: "#3498db",
 };
 
 type Colors = typeof colorsLight;
@@ -21,7 +21,7 @@ const colorsDark = {
     bg5: "#444",
     text: "#fff",
     textSecondary: "#aaa",
-    accent: "#818cf8",
+    accent: "#2980b9",
 } satisfies Colors;
 
 const useColors = (): Colors => {

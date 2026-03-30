@@ -12,6 +12,7 @@ import type {
     SchoolsConnection,
     SchoolsConnectionEdge,
 } from "#/graphql";
+import type { Colors } from "#/hooks/colors";
 
 import * as React from "react";
 import ReactMap, { Layer, Source } from "react-map-gl/maplibre";
@@ -19,18 +20,10 @@ import ReactMap, { Layer, Source } from "react-map-gl/maplibre";
 import { useThemeContext } from "#/contexts/theme";
 import { getSchoolLang } from "#/functions/school-lang";
 import { useLazyQuery } from "#/graphql";
+import { useColors } from "#/hooks/colors";
 
 type MapProps = {
     dom?: DOMProps;
-};
-
-const layerProps: LayerProps = {
-    id: "point",
-    type: "circle",
-    paint: {
-        "circle-radius": 10,
-        "circle-color": "#007cbf",
-    },
 };
 
 const INITIAL_VIEW_STATE = {
@@ -178,6 +171,8 @@ const getSchoolsPageData = (
 const HomeMap = (): React.JSX.Element => {
     const { theme } = useThemeContext();
 
+    const colors: Colors = useColors();
+
     const schoolLang = getSchoolLang();
 
     const requestVersionRef = React.useRef(0);
@@ -197,6 +192,17 @@ const HomeMap = (): React.JSX.Element => {
             suspense: false,
         },
     );
+
+    const layerProps: LayerProps = {
+        id: "point",
+        type: "circle",
+        paint: {
+            "circle-radius": 5,
+            "circle-color": colors.accent,
+            "circle-stroke-width": 2.5,
+            "circle-stroke-color": colors.bg2,
+        },
+    };
 
     const applyPage = React.useEffectEvent(
         (
