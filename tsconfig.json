@@ -32,8 +32,6 @@
         "./src",
         "./app.config.ts",
         "./babel.config.ts",
-        "./expo-env.d.ts",
-        ".expo/types/**/*.ts",
-        "expo-env.d.ts"
+        "./expo-env.d.ts"
     ]
 }
