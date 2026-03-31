@@ -41,6 +41,114 @@ const translation = {
                 }),
             },
         },
+        schools: {
+            detail: {
+                title: t({
+                    en: "School Details",
+                    "zh-HK": "學校詳情",
+                }),
+                schoolIdLabel: t({
+                    en: "School ID",
+                    "zh-HK": "學校編號",
+                }),
+                unavailable: t({
+                    en: "Not available",
+                    "zh-HK": "未提供",
+                }),
+                missingIdTitle: t({
+                    en: "Missing school ID",
+                    "zh-HK": "缺少學校編號",
+                }),
+                missingIdDescription: t({
+                    en: "This page cannot load school details because the route did not include a school ID.",
+                    "zh-HK": "未能載入學校資料，因為路由參數中沒有學校編號。",
+                }),
+                notFoundTitle: t({
+                    en: "School not found",
+                    "zh-HK": "找不到學校",
+                }),
+                notFoundDescription: t({
+                    en: "We could not load details for this school right now. Please try again later.",
+                    "zh-HK": "目前未能取得這間學校的資料，請稍後再試。",
+                }),
+                noDetails: t({
+                    en: "No school details are available for this record.",
+                    "zh-HK": "目前沒有可顯示的學校資料。",
+                }),
+                sections: {
+                    profile: t({
+                        en: "Profile",
+                        "zh-HK": "學校資料",
+                    }),
+                    contact: t({
+                        en: "Contact",
+                        "zh-HK": "聯絡資料",
+                    }),
+                    coordinates: t({
+                        en: "Coordinates",
+                        "zh-HK": "座標",
+                    }),
+                },
+                fields: {
+                    category: t({
+                        en: "Category",
+                        "zh-HK": "類別",
+                    }),
+                    level: t({
+                        en: "Level",
+                        "zh-HK": "級別",
+                    }),
+                    district: t({
+                        en: "District",
+                        "zh-HK": "地區",
+                    }),
+                    financeType: t({
+                        en: "Finance Type",
+                        "zh-HK": "資助類別",
+                    }),
+                    session: t({
+                        en: "Session",
+                        "zh-HK": "授課時段",
+                    }),
+                    studentsGender: t({
+                        en: "Students Gender",
+                        "zh-HK": "學生性別",
+                    }),
+                    language: t({
+                        en: "Language",
+                        "zh-HK": "授課語言",
+                    }),
+                    address: t({
+                        en: "Address",
+                        "zh-HK": "地址",
+                    }),
+                    telephone: t({
+                        en: "Telephone",
+                        "zh-HK": "電話",
+                    }),
+                    fax: t({
+                        en: "Fax",
+                        "zh-HK": "傳真",
+                    }),
+                    latitude: t({
+                        en: "Latitude",
+                        "zh-HK": "緯度",
+                    }),
+                    longitude: t({
+                        en: "Longitude",
+                        "zh-HK": "經度",
+                    }),
+                    easting: t({
+                        en: "Easting",
+                        "zh-HK": "東坐標",
+                    }),
+                    northing: t({
+                        en: "Northing",
+                        "zh-HK": "北坐標",
+                    }),
+                },
+            },
+        },
     },
 } as const satisfies Dictionary;
 

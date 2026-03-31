@@ -1,15 +1,13 @@
 import type * as React from "react";
 
-import { getLocales } from "expo-localization";
 import { IntlayerProvider } from "react-native-intlayer";
 
 import { ThemeContextProvider } from "#/contexts/theme";
+import { getDeviceLocale } from "#/utils/locale";
 
 type ProviderProps = {
     children: React.ReactNode;
 };
-
-const getDeviceLocale = (): string => getLocales()[0]?.languageTag;
 
 const Providers = (props: ProviderProps): React.JSX.Element => {
     return (

@@ -18,9 +18,9 @@ import * as React from "react";
 import ReactMap, { Layer, Source } from "react-map-gl/maplibre";
 
 import { useThemeContext } from "#/contexts/theme";
-import { getSchoolLang } from "#/functions/school-lang";
 import { useLazyQuery } from "#/graphql";
 import { useColors } from "#/hooks/colors";
+import { useSchoolLang } from "#/hooks/school-lang";
 
 type MapProps = {
     onClick: (id: string) => void;
@@ -187,7 +187,7 @@ const HomeMap = (props: MapProps): React.JSX.Element => {
 
     const colors: Colors = useColors();
 
-    const schoolLang: SchoolLang = getSchoolLang();
+    const lang: SchoolLang = useSchoolLang();
 
     const requestVersionRef = React.useRef(0);
 
@@ -268,7 +268,7 @@ const HomeMap = (props: MapProps): React.JSX.Element => {
                     args: {
                         after,
                         first: SCHOOLS_PAGE_SIZE,
-                        lang: schoolLang,
+                        lang,
                     },
                 });
 
@@ -280,7 +280,7 @@ const HomeMap = (props: MapProps): React.JSX.Element => {
     );
 
     React.useEffect((): (() => void) => {
-        if (!schoolLang) return (): void => void 0;
+        if (!lang) return (): void => void 0;
 
         requestVersionRef.current += 1;
 
@@ -297,7 +297,7 @@ const HomeMap = (props: MapProps): React.JSX.Element => {
             requestVersionRef.current += 1;
         };
     }, [
-        schoolLang,
+        lang,
     ]);
 
     React.useEffect((): VoidFunction => {
@@ -327,6 +327,7 @@ const HomeMap = (props: MapProps): React.JSX.Element => {
             }}
         >
             <ReactMap
+                attributionControl={false}
                 style={{
                     width: "100%",
                     height: "100%",
@@ -340,12 +341,8 @@ const HomeMap = (props: MapProps): React.JSX.Element => {
                 }
                 cursor={isPointHovered ? "pointer" : "auto"}
                 onClick={handleMapClick}
-                onMouseEnter={(): void => {
-                    setIsPointHovered(true);
-                }}
-                onMouseLeave={(): void => {
-                    setIsPointHovered(false);
-                }}
+                onMouseEnter={(): void => setIsPointHovered(true)}
+                onMouseLeave={(): void => setIsPointHovered(false)}
             >
                 <Source
                     id="schools"
