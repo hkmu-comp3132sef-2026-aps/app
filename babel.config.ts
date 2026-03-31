@@ -88,6 +88,20 @@ const config = (api: ConfigFunctionAPI): TransformOptions => {
                 },
             ],
         ],
+        plugins: [
+            [
+                "@babel/plugin-transform-spread",
+                {
+                    /**
+                     * Keep iterable spreads spec-correct for web production.
+                     *
+                     * GQty's query builder spreads Map/iterator values,
+                     * and loose mode rewrites those into broken Array.concat calls.
+                     */
+                    loose: false,
+                },
+            ],
+        ],
     };
 };
 
