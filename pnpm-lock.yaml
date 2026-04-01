@@ -50,6 +50,9 @@ importers:
       maplibre-gl:
         specifier: ^5.21.1
         version: 5.21.1
+      message-channel-api:
+        specifier: ~0.1.0
+        version: 0.1.0
       react:
         specifier: ^19.2.0
         version: 19.2.0
@@ -3571,6 +3574,9 @@ packages:
   merge2@1.4.1:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
+
+  message-channel-api@0.1.0:
+    resolution: {integrity: sha512-FUrLi0x/9tXNZfOFsSuN1AH5vtX6V8muuseQ0ZPoAeohCW5mSB1W4CCuVmQmUS/lahyv9idMv8O6GhyITpPRig==}
 
   metro-babel-transformer@0.83.3:
     resolution: {integrity: sha512-1vxlvj2yY24ES1O5RsSIvg4a4WeL7PFXgKOHvXTXiW0deLvQr28ExXj6LjwCCDZ4YZLhq6HddLpZnX4dEdSq5g==}
@@ -8816,6 +8822,8 @@ snapshots:
   merge-stream@2.0.0: {}
 
   merge2@1.4.1: {}
+
+  message-channel-api@0.1.0: {}
 
   metro-babel-transformer@0.83.3:
     dependencies:

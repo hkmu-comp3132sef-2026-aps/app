@@ -19,6 +19,7 @@
         "intlayer": "^8.6.0",
         "lucide-react-native": "^1.7.0",
         "maplibre-gl": "^5.21.1",
+        "message-channel-api": "~0.1.0",
         "react": "^19.2.0",
         "react-dom": "^19.2.0",
         "react-intlayer": "^8.6.0",
