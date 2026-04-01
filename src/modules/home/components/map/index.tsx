@@ -5,6 +5,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import type { DOMProps } from "expo/dom";
 import type { LayerProps, MapLayerMouseEvent } from "react-map-gl/maplibre";
 
+import type { Theme } from "#/contexts/theme";
 import type {
     Maybe,
     Query,
@@ -17,10 +18,7 @@ import type { Colors } from "#/hooks/colors";
 import * as React from "react";
 import ReactMap, { Layer, Source } from "react-map-gl/maplibre";
 
-import { useThemeContext } from "#/contexts/theme";
 import { useLazyQuery } from "#/graphql";
-import { useColors } from "#/hooks/colors";
-import { useSchoolLang } from "#/hooks/school-lang";
 
 type MaplibreModule = typeof import("maplibre-gl");
 
@@ -118,6 +116,9 @@ const loadMaplibre = (): Promise<MaplibreModule> => {
 };
 
 type MapProps = {
+    theme: Theme;
+    colors: Colors;
+    lang: SchoolLang;
     onClick: (id: string) => void;
     dom?: DOMProps;
 };
@@ -278,13 +279,12 @@ const getSchoolsPageData = (
 };
 
 // Modules with the "use dom" directive only support a single default export.
-export default (props: MapProps): React.JSX.Element => {
-    const { theme } = useThemeContext();
-
-    const colors: Colors = useColors();
-
-    const lang: SchoolLang = useSchoolLang();
-
+export default ({
+    theme,
+    colors,
+    lang,
+    onClick,
+}: MapProps): React.JSX.Element => {
     const [maplibre, setMaplibre] = React.useState<MaplibreModule | null>(
         (): MaplibreModule | null => {
             if (typeof window === "undefined" || !window.maplibregl)
@@ -365,7 +365,7 @@ export default (props: MapProps): React.JSX.Element => {
 
         if (typeof schoolId !== "string") return void 0;
 
-        props.onClick(schoolId);
+        onClick(schoolId);
     };
 
     const loadPage = React.useEffectEvent(
