@@ -9,16 +9,9 @@ node_modules/
 .expo/
 expo-env.d.ts
 
-# GraphQL
-.gqty/
-
-# Intlayer
-.intlayer/
-
 # Builds
 dist/
-/*.apk
-/*.aab
+/public/vendor/
 
 # TypeScript
 *.tsbuildinfo

@@ -3,11 +3,11 @@
     "compilerOptions": {
         "jsx": "react-native",
         "paths": {
-            "#/*": [
-                "./src/*"
-            ],
             "#/graphql": [
                 "./.gqty/index.ts"
+            ],
+            "#/*": [
+                "./src/*"
             ],
             "@intlayer/dictionaries-entry": [
                 "./.intlayer/main/dictionaries.mjs"

@@ -1,6 +1,10 @@
 {
     "private": true,
     "main": "./src/index.ts",
+    "imports": {
+        "#/graphql": "./.gqty/index.ts",
+        "#/*": "./src/*"
+    },
     "browserslist": [
         "fully supports es6-module"
     ],
@@ -44,9 +48,8 @@
         "@types/babel-core": "^6.25.10",
         "@types/node": "^25.5.0",
         "@types/react": "^19.2.14",
-        "expo-build-properties": "^55.0.10",
         "serve": "^14.2.6",
-        "ts-node": "^10.9.2",
+        "tsx": "^4.21.0",
         "typescript": "^5.9.3"
     }
 }

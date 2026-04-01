@@ -1,4 +1,4 @@
-import "ts-node/register";
+import "tsx/cjs";
 
 import type { ExpoConfig } from "expo/config";
 
@@ -46,23 +46,14 @@ const config: ExpoConfig = {
             "expo-router",
         ],
         [
-            "expo-build-properties",
-            {
-                android: {
-                    // Android 16.0 (2025-06-10)
-                    compileSdkVersion: 36,
-                    targetSdkVersion: 36,
-                    buildToolsVersion: "36.0.0",
-                    // Android 7.0+ (2016-08-22)
-                    minSdkVersion: 24,
-                },
-                ios: {
-                    // iOS 15.1+ (2021-09-20)
-                    deploymentTarget: "15.1",
-                },
-            },
+            "@maplibre/maplibre-react-native",
         ],
     ],
+    extra: {
+        eas: {
+            projectId: "92103542-3e49-41b2-9138-0d759aa8db12",
+        },
+    },
 };
 
 export default config;
