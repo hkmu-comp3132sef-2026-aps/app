@@ -1,40 +1,42 @@
 {
-    "extends": "./node_modules/@apst/tsconfig/ts/5/tsconfig.json",
-    "compilerOptions": {
-        "jsx": "react-native",
-        "paths": {
-            "#/*": [
-                "./src/*"
-            ],
-            "#/graphql": [
-                "./.gqty/index.ts"
-            ],
-            "@intlayer/dictionaries-entry": [
-                "./.intlayer/main/dictionaries.mjs"
-            ],
-            "@intlayer/unmerged-dictionaries-entry": [
-                "./.intlayer/main/unmerged_dictionaries.mjs"
-            ],
-            "@intlayer/remote-dictionaries-entry": [
-                "./.intlayer/main/remote_dictionaries.mjs"
-            ],
-            "@intlayer/dynamic-dictionaries-entry": [
-                "./.intlayer/main/dynamic_dictionaries.mjs"
-            ],
-            "@intlayer/fetch-dictionaries-entry": [
-                "./.intlayer/main/fetch_dictionaries.mjs"
-            ],
-            "@intlayer/config/built": [
-                "./.intlayer/config/configuration.mjs"
-            ]
-        }
-    },
-    "include": [
-        "./.expo/types/**/*.ts",
-        "./.intlayer/types/**/*.ts",
-        "./src",
-        "./app.config.ts",
-        "./babel.config.ts",
-        "./expo-env.d.ts"
-    ]
+  "extends": "./node_modules/@apst/tsconfig/ts/5/tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-native",
+    "paths": {
+      "#/*": [
+        "./src/*"
+      ],
+      "#/graphql": [
+        "./.gqty/index.ts"
+      ],
+      "@intlayer/dictionaries-entry": [
+        "./.intlayer/main/dictionaries.mjs"
+      ],
+      "@intlayer/unmerged-dictionaries-entry": [
+        "./.intlayer/main/unmerged_dictionaries.mjs"
+      ],
+      "@intlayer/remote-dictionaries-entry": [
+        "./.intlayer/main/remote_dictionaries.mjs"
+      ],
+      "@intlayer/dynamic-dictionaries-entry": [
+        "./.intlayer/main/dynamic_dictionaries.mjs"
+      ],
+      "@intlayer/fetch-dictionaries-entry": [
+        "./.intlayer/main/fetch_dictionaries.mjs"
+      ],
+      "@intlayer/config/built": [
+        "./.intlayer/config/configuration.mjs"
+      ]
+    }
+  },
+  "include": [
+    "./.expo/types/**/*.ts",
+    "./.intlayer/types/**/*.ts",
+    "./src",
+    "./app.config.ts",
+    "./expo-env.d.ts",
+    "./intlayer.config.ts",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
+  ]
 }
