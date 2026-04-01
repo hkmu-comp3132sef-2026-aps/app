@@ -6,6 +6,11 @@ const DEFAULT_LOCALE: LocalesValues = "en";
 
 const CHINESE_HONG_KONG_LOCALE: LocalesValues = "zh-HK";
 
+const LOCALE_NAMES: Record<LocalesValues, string> = {
+    en: "English",
+    "zh-HK": "繁體中文（香港）",
+};
+
 const resolveSupportedLocale = (
     languageTag: string | null | undefined,
     languageCode: string | null | undefined,
@@ -27,4 +32,7 @@ const getDeviceLocale = (): LocalesValues => {
     return resolveSupportedLocale(locale?.languageTag, locale?.languageCode);
 };
 
-export { getDeviceLocale, resolveSupportedLocale };
+const getLocaleLabel = (locale: LocalesValues): string =>
+    LOCALE_NAMES[locale] ?? locale;
+
+export { getDeviceLocale, getLocaleLabel, resolveSupportedLocale };

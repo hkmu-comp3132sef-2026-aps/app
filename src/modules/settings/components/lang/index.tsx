@@ -4,11 +4,11 @@ import type { ViewStyle } from "react-native";
 
 import type { Colors } from "#/hooks/colors";
 
-import { getLocaleName } from "intlayer";
 import { useIntlayer, useLocale } from "react-intlayer";
 import styled from "styled-components/native";
 
 import { useColors } from "#/hooks/colors";
+import { getLocaleLabel } from "#/utils/locale";
 
 const SettingsLang = (): React.JSX.Element => {
     const colors: Colors = useColors();
@@ -35,7 +35,7 @@ const SettingsLang = (): React.JSX.Element => {
                         ]}
                     >
                         <OptionText $colors={colors}>
-                            {getLocaleName(locale)}
+                            {getLocaleLabel(locale)}
                         </OptionText>
                     </Option>
                 ),
