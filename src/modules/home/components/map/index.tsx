@@ -2,8 +2,8 @@
 
 import "maplibre-gl/dist/maplibre-gl.css";
 
+import type { LayerProps, MapLayerMouseEvent } from "@vis.gl/react-maplibre";
 import type { DOMProps } from "expo/dom";
-import type { LayerProps, MapLayerMouseEvent } from "react-map-gl/maplibre";
 
 import type { Theme } from "#/contexts/theme";
 import type {
@@ -15,105 +15,10 @@ import type {
 } from "#/graphql";
 import type { Colors } from "#/hooks/colors";
 
+import ReactMap, { Layer, Source } from "@vis.gl/react-maplibre";
 import * as React from "react";
-import ReactMap, { Layer, Source } from "react-map-gl/maplibre";
 
 import { useLazyQuery } from "#/graphql";
-
-type MaplibreModule = typeof import("maplibre-gl");
-
-declare global {
-    interface Window {
-        maplibregl?: MaplibreModule;
-        __maplibreLoadPromise__?: Promise<MaplibreModule>;
-    }
-}
-
-const MAPLIBRE_SCRIPT_URL =
-    `${process.env.EXPO_BASE_URL ?? "/"}vendor/maplibre-gl-csp.js` as const;
-const MAPLIBRE_WORKER_URL =
-    `${process.env.EXPO_BASE_URL ?? "/"}vendor/maplibre-gl-csp-worker.js` as const;
-
-// Expo DOM runs inside a WebView-backed browser context, but Metro does not
-// execute MapLibre's published UMD bundles reliably as imported modules there.
-const finalizeMaplibre = (resolve: (module: MaplibreModule) => void): void => {
-    const maplibre = window.maplibregl;
-
-    if (!maplibre) {
-        throw new Error("MapLibre did not attach to window");
-    }
-
-    maplibre.setWorkerUrl(MAPLIBRE_WORKER_URL);
-
-    resolve(maplibre);
-};
-
-const loadMaplibre = (): Promise<MaplibreModule> => {
-    if (window.maplibregl) {
-        window.maplibregl.setWorkerUrl(MAPLIBRE_WORKER_URL);
-
-        return Promise.resolve(window.maplibregl);
-    }
-
-    if (window.__maplibreLoadPromise__) {
-        return window.__maplibreLoadPromise__;
-    }
-
-    window.__maplibreLoadPromise__ = new Promise<MaplibreModule>(
-        (resolve, reject): void => {
-            const handleLoad = (): void => {
-                try {
-                    finalizeMaplibre(resolve);
-                } catch (error) {
-                    window.__maplibreLoadPromise__ = undefined;
-
-                    reject(error);
-                }
-            };
-
-            const handleError = (): void => {
-                window.__maplibreLoadPromise__ = undefined;
-                reject(new Error("Unable to load the MapLibre script"));
-            };
-
-            const existingScript: Element | null = document.querySelector(
-                'script[data-maplibre-script="true"]',
-            );
-
-            if (existingScript instanceof HTMLScriptElement) {
-                existingScript.addEventListener("load", handleLoad, {
-                    once: true,
-                });
-
-                existingScript.addEventListener("error", handleError, {
-                    once: true,
-                });
-
-                return void 0;
-            }
-
-            const script: HTMLScriptElement = document.createElement("script");
-
-            script.src = MAPLIBRE_SCRIPT_URL;
-
-            script.async = true;
-
-            script.dataset.maplibreScript = "true";
-
-            script.addEventListener("load", handleLoad, {
-                once: true,
-            });
-
-            script.addEventListener("error", handleError, {
-                once: true,
-            });
-
-            document.head.appendChild(script);
-        },
-    );
-
-    return window.__maplibreLoadPromise__;
-};
 
 type MapProps = {
     theme: Theme;
@@ -224,9 +129,7 @@ const appendSourceData = (
 ): MapSourceData => {
     if (incoming.features.length === 0) return current;
 
-    if (current.features.length === 0) {
-        return incoming;
-    }
+    if (current.features.length === 0) return incoming;
 
     return {
         type: "FeatureCollection",
@@ -285,21 +188,6 @@ export default ({
     lang,
     onClick,
 }: MapProps): React.JSX.Element => {
-    const [maplibre, setMaplibre] = React.useState<MaplibreModule | null>(
-        (): MaplibreModule | null => {
-            if (typeof window === "undefined" || !window.maplibregl)
-                return null;
-
-            window.maplibregl.setWorkerUrl(MAPLIBRE_WORKER_URL);
-
-            return window.maplibregl;
-        },
-    );
-
-    const [maplibreError, setMaplibreError] = React.useState<Error | null>(
-        null,
-    );
-
     const requestVersionRef = React.useRef(0);
 
     const [sourceData, setSourceData] = React.useState<MapSourceData>(
@@ -337,7 +225,7 @@ export default ({
             requestVersion: number,
             replace: boolean,
         ): void => {
-            if (requestVersion !== requestVersionRef.current) return;
+            if (requestVersion !== requestVersionRef.current) return void 0;
 
             React.startTransition(() => {
                 setSourceData((current): MapSourceData => {
@@ -385,7 +273,7 @@ export default ({
 
                 applyPage(pageData, requestVersion, replace);
             } catch {
-                return;
+                return void 0;
             }
         },
     );
@@ -409,34 +297,6 @@ export default ({
         };
     }, [
         lang,
-    ]);
-
-    React.useEffect((): VoidFunction => {
-        if (maplibre) return (): void => void 0;
-
-        let isCancelled: boolean = false;
-
-        loadMaplibre()
-            .then((module): void => {
-                if (isCancelled) return void 0;
-
-                setMaplibre(module);
-            })
-            .catch((error): void => {
-                if (isCancelled) return void 0;
-
-                setMaplibreError(
-                    error instanceof Error
-                        ? error
-                        : new Error("Unable to load MapLibre"),
-                );
-            });
-
-        return (): void => {
-            isCancelled = true;
-        };
-    }, [
-        maplibre,
     ]);
 
     React.useEffect((): VoidFunction => {
@@ -465,54 +325,33 @@ export default ({
                 position: "relative",
             }}
         >
-            {maplibre ? (
-                <ReactMap
-                    attributionControl={false}
-                    style={{
-                        width: "100%",
-                        height: "100%",
-                    }}
-                    mapLib={maplibre}
-                    interactiveLayerIds={[
-                        POINT_LAYER_ID,
-                    ]}
-                    initialViewState={INITIAL_VIEW_STATE}
-                    mapStyle={
-                        theme === "light" ? MAP_STYLES.light : MAP_STYLES.dark
-                    }
-                    cursor={isPointHovered ? "pointer" : "auto"}
-                    onClick={handleMapClick}
-                    onMouseEnter={(): void => setIsPointHovered(true)}
-                    onMouseLeave={(): void => setIsPointHovered(false)}
+            <ReactMap
+                attributionControl={false}
+                style={{
+                    width: "100%",
+                    height: "100%",
+                }}
+                interactiveLayerIds={[
+                    POINT_LAYER_ID,
+                ]}
+                initialViewState={INITIAL_VIEW_STATE}
+                mapStyle={
+                    theme === "light" ? MAP_STYLES.light : MAP_STYLES.dark
+                }
+                cursor={isPointHovered ? "pointer" : "auto"}
+                onClick={handleMapClick}
+                onMouseEnter={(): void => setIsPointHovered(true)}
+                onMouseLeave={(): void => setIsPointHovered(false)}
+            >
+                <Source
+                    id="schools"
+                    type="geojson"
+                    data={sourceData}
                 >
-                    <Source
-                        id="schools"
-                        type="geojson"
-                        data={sourceData}
-                    >
-                        <Layer {...layerProps} />
-                    </Source>
-                </ReactMap>
-            ) : (
-                <div
-                    style={{
-                        position: "absolute",
-                        inset: 0,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        backgroundColor: "rgba(15, 23, 42, 0.78)",
-                        color: "#f8fafc",
-                        padding: "8px 12px",
-                        fontSize: 14,
-                    }}
-                >
-                    {maplibreError
-                        ? "Unable to load map engine"
-                        : "Loading map engine"}
-                </div>
-            )}
-            {maplibre && (error || isLoading || pagination.hasNextPage) && (
+                    <Layer {...layerProps} />
+                </Source>
+            </ReactMap>
+            {(error || isLoading || pagination.hasNextPage) && (
                 <div
                     style={{
                         position: "absolute",

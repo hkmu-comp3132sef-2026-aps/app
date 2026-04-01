@@ -29,10 +29,6 @@ fix:
 up:
     pnpm up --interactive --latest --recursive
 
-# Sync maplibre assets
-sync-maplibre:
-    node ./scripts/sync-maplibre.ts
-
 # Prepare gqty
 gqty:
     {{gqty}} \
@@ -47,7 +43,6 @@ int:
 
 # Prepare dependencies
 pre:
-    just sync-maplibre
     just gqty
     just int
 
