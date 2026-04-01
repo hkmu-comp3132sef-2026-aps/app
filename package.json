@@ -1,10 +1,10 @@
 {
     "private": true,
-    "main": "./src/index.ts",
     "imports": {
         "#/graphql": "./.gqty/index.ts",
         "#/*": "./src/*"
     },
+    "main": "./src/index.ts",
     "browserslist": [
         "fully supports es6-module"
     ],
