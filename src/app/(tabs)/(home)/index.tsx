@@ -3,7 +3,7 @@ import type * as React from "react";
 
 import { useRouter } from "expo-router";
 
-import { HomeMap } from "#/modules/home/components/map";
+import HomeMap from "#/modules/home/components/map";
 
 export default (): React.JSX.Element => {
     const router: Router = useRouter();

@@ -277,7 +277,8 @@ const getSchoolsPageData = (
     };
 };
 
-const HomeMap = (props: MapProps): React.JSX.Element => {
+// Modules with the "use dom" directive only support a single default export.
+export default (props: MapProps): React.JSX.Element => {
     const { theme } = useThemeContext();
 
     const colors: Colors = useColors();
@@ -535,6 +536,3 @@ const HomeMap = (props: MapProps): React.JSX.Element => {
         </div>
     );
 };
-
-export type { MapProps };
-export { HomeMap };
