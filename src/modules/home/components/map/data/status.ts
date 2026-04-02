@@ -4,20 +4,12 @@ const getHomeMapStatusText = (
     pagination: PaginationState,
     error: unknown,
     isLoading: boolean,
-): string | null => {
-    if (!(error || isLoading || pagination.hasNextPage)) {
-        return null;
-    }
+): string | undefined => {
+    if (!(error || isLoading || pagination.hasNextPage)) return void 0;
 
-    if (error) {
-        return "Unable to finish loading schools";
-    }
+    if (error) return "Something went wrong.";
 
-    if (pagination.totalCount > 0) {
-        return `${pagination.loadedCount.toLocaleString()} / ${pagination.totalCount.toLocaleString()} schools`;
-    }
-
-    return "Loading schools";
+    return "Loading...";
 };
 
 export { getHomeMapStatusText };

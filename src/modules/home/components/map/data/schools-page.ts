@@ -61,6 +61,7 @@ const createSchoolsPageData = (
     connection: Maybe<SchoolsConnectionLike>,
 ): SchoolsPageData => {
     const edges: Maybe<SchoolsConnectionEdgeLike>[] = connection?.edges ?? [];
+
     const features: MapFeature[] = [];
 
     for (let i: number = 0; i < edges.length; i++) {
@@ -100,7 +101,7 @@ const createSchoolsPageData = (
 const fetchSchoolsPageData = async (
     args: SchoolsPageArgs,
 ): Promise<SchoolsPageData> => {
-    const response = await fetch(SCHOOLS_GRAPHQL_ENDPOINT, {
+    const response: Response = await fetch(SCHOOLS_GRAPHQL_ENDPOINT, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -126,12 +127,11 @@ const fetchSchoolsPageData = async (
     }
 
     const payload: SchoolsPageGraphQLResponse = await response.json();
+
     const graphQLErrorMessage: string | undefined =
         payload.errors?.[0]?.message ?? undefined;
 
-    if (graphQLErrorMessage) {
-        throw new Error(graphQLErrorMessage);
-    }
+    if (graphQLErrorMessage) throw new Error(graphQLErrorMessage);
 
     return createSchoolsPageData(payload.data?.schoolsConnection ?? null);
 };

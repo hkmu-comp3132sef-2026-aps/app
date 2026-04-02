@@ -1,4 +1,5 @@
 import type { Router } from "expo-router";
+import type { ViewStyle } from "react-native";
 
 import type { Maybe, School, SchoolLang } from "#/graphql";
 import type { Colors } from "#/hooks/colors";
@@ -7,7 +8,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { X } from "lucide-react-native";
 import * as React from "react";
 import { useIntlayer } from "react-intlayer";
-import { ScrollView, type ViewStyle } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import styled from "styled-components/native";
 
 import { Blank } from "#/components/blank";

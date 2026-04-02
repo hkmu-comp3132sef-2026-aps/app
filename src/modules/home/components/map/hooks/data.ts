@@ -26,17 +26,21 @@ const useSchoolMapData = (lang: SchoolLang) => {
     const requestVersionRef = React.useRef(0);
 
     const [error, setError] = React.useState<unknown>(null);
+
     const [sourceData, setSourceData] = React.useState<MapSourceData>(
         createEmptySourceData,
     );
+
     const [pagination, setPagination] = React.useState<PaginationState>(
         createEmptyPaginationState,
     );
 
     const pageLoadDelayMs: number =
         Platform.OS === "web" ? PAGE_LOAD_DELAY_MS : NATIVE_PAGE_LOAD_DELAY_MS;
+
     const schoolsPageSize: number =
         Platform.OS === "web" ? SCHOOLS_PAGE_SIZE : NATIVE_SCHOOLS_PAGE_SIZE;
+
     const [isLoading, setIsLoading] = React.useState(false);
 
     const applyPage = React.useEffectEvent(
