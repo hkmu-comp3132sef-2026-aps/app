@@ -4,6 +4,7 @@ import type { Colors } from "#/hooks/colors";
 
 import { Stack } from "expo-router";
 
+import { useColorSync } from "#/hooks/color-sync";
 import { useColors } from "#/hooks/colors";
 import { Providers } from "#/providers";
 
@@ -12,6 +13,8 @@ export const unstable_settings = {
 };
 
 const StackLayout = (): React.JSX.Element => {
+    useColorSync();
+
     const colors: Colors = useColors();
 
     return (
