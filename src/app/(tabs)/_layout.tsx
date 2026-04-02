@@ -105,5 +105,6 @@ export default (): React.JSX.Element => {
 
 const TabBarLabel = styled.Text({
     textAlign: "center",
+    lineHeight: 14,
     fontSize: 12,
 });

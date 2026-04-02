@@ -44,6 +44,7 @@ const Container = styled.View<{
 const Title = styled.Text<{
     $colors: Colors;
 }>((props) => ({
+    lineHeight: 24,
     fontSize: 20,
     fontWeight: "bold",
     padding: 16,

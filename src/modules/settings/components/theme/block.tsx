@@ -47,6 +47,7 @@ const Option = styled.Pressable<{
 const OptionText = styled.Text<{
     $colors: Colors;
 }>((props) => ({
+    lineHeight: 20,
     fontSize: 16,
     padding: 16,
     color: props.$colors.textSecondary,
