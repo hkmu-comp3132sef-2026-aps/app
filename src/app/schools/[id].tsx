@@ -11,8 +11,8 @@ import { useIntlayer } from "react-intlayer";
 import { ScrollView } from "react-native-gesture-handler";
 import styled from "styled-components/native";
 
+import { useSchoolDetailData } from "#/app/schools/hooks/data";
 import { Blank } from "#/components/blank";
-import { useQuery } from "#/graphql";
 import { useColors } from "#/hooks/colors";
 import { useSchoolLang } from "#/hooks/school-lang";
 
@@ -169,14 +169,7 @@ export default (): React.JSX.Element => {
 
     const schoolId: string | undefined = getSchoolIdParam(id);
 
-    const { school } = useQuery();
-
-    const data: Maybe<School> = schoolId
-        ? school({
-              lang,
-              schoolId,
-          })
-        : null;
+    const { hasLoaded, school: data } = useSchoolDetailData(lang, schoolId);
 
     if (!schoolId) {
         return (
@@ -191,6 +184,23 @@ export default (): React.JSX.Element => {
                         </Description>
                     </EmptyCard>
                 </ContentContainer>
+            </Container>
+        );
+    }
+
+    if (!hasLoaded) {
+        return (
+            <Container $colors={colors}>
+                <LoadingContentContainer>
+                    <EmptyCard $colors={colors}>
+                        <Title $colors={colors}>
+                            {schoolDetails.loadingTitle}
+                        </Title>
+                        <Description $colors={colors}>
+                            {schoolDetails.loadingDescription}
+                        </Description>
+                    </EmptyCard>
+                </LoadingContentContainer>
             </Container>
         );
     }
@@ -344,6 +354,15 @@ const ContentContainer = styled.View({
     width: "100%",
     maxWidth: 640,
     alignSelf: "center",
+});
+
+const LoadingContentContainer = styled.View({
+    flex: 1,
+    width: "100%",
+    maxWidth: 640,
+    alignSelf: "center",
+    justifyContent: "center",
+    padding: 20,
 });
 
 const CloseButton = styled.Pressable<{

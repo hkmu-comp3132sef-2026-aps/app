@@ -63,6 +63,14 @@ const translation = {
                     en: "This page cannot load school details because the route did not include a school ID.",
                     "zh-HK": "未能載入學校資料，因為路由參數中沒有學校編號。",
                 }),
+                loadingTitle: t({
+                    en: "Loading school details",
+                    "zh-HK": "正在載入學校資料",
+                }),
+                loadingDescription: t({
+                    en: "Please wait while we load this school's information.",
+                    "zh-HK": "正在載入這間學校的資料，請稍候。",
+                }),
                 notFoundTitle: t({
                     en: "School not found",
                     "zh-HK": "找不到學校",

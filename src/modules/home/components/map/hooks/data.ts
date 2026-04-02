@@ -14,6 +14,10 @@ import {
     PAGE_LOAD_DELAY_MS,
     SCHOOLS_PAGE_SIZE,
 } from "#/modules/home/components/map/constants";
+import {
+    getCachedSchoolMapData,
+    persistCachedSchoolMapData,
+} from "#/modules/home/components/map/data/cache";
 import { createEmptyPaginationState } from "#/modules/home/components/map/data/pagination";
 import { fetchSchoolsPageData } from "#/modules/home/components/map/data/schools-page";
 import {
@@ -24,6 +28,13 @@ import { getHomeMapStatusText } from "#/modules/home/components/map/data/status"
 
 const useSchoolMapData = (lang: SchoolLang) => {
     const requestVersionRef = React.useRef(0);
+    const sourceDataRef = React.useRef<MapSourceData>(createEmptySourceData());
+    const paginationRef = React.useRef<PaginationState>(
+        createEmptyPaginationState(),
+    );
+    const staleCacheRef = React.useRef<Awaited<
+        ReturnType<typeof getCachedSchoolMapData>
+    > | null>(null);
 
     const [error, setError] = React.useState<unknown>(null);
 
@@ -43,6 +54,21 @@ const useSchoolMapData = (lang: SchoolLang) => {
 
     const [isLoading, setIsLoading] = React.useState(false);
 
+    const setMapState = React.useEffectEvent(
+        (
+            nextSourceData: MapSourceData,
+            nextPagination: PaginationState,
+        ): void => {
+            sourceDataRef.current = nextSourceData;
+            paginationRef.current = nextPagination;
+
+            React.startTransition((): void => {
+                setSourceData(nextSourceData);
+                setPagination(nextPagination);
+            });
+        },
+    );
+
     const applyPage = React.useEffectEvent(
         (
             pageData: SchoolsPageData,
@@ -51,24 +77,28 @@ const useSchoolMapData = (lang: SchoolLang) => {
         ): void => {
             if (requestVersion !== requestVersionRef.current) return void 0;
 
-            React.startTransition((): void => {
-                setSourceData((current: MapSourceData): MapSourceData => {
-                    if (replace) return pageData.source;
+            const nextSourceData: MapSourceData = replace
+                ? pageData.source
+                : appendSourceData(sourceDataRef.current, pageData.source);
 
-                    return appendSourceData(current, pageData.source);
-                });
+            const nextPagination: PaginationState = {
+                endCursor: pageData.pageInfo.endCursor,
+                hasNextPage: pageData.pageInfo.hasNextPage,
+                loadedCount: replace
+                    ? pageData.loadedCount
+                    : paginationRef.current.loadedCount + pageData.loadedCount,
+                totalCount: pageData.totalCount,
+            };
 
-                setPagination((current: PaginationState): PaginationState => {
-                    return {
-                        endCursor: pageData.pageInfo.endCursor,
-                        hasNextPage: pageData.pageInfo.hasNextPage,
-                        loadedCount: replace
-                            ? pageData.loadedCount
-                            : current.loadedCount + pageData.loadedCount,
-                        totalCount: pageData.totalCount,
-                    };
+            setMapState(nextSourceData, nextPagination);
+
+            if (!nextPagination.hasNextPage) {
+                void persistCachedSchoolMapData({
+                    lang,
+                    sourceData: nextSourceData,
+                    totalCount: nextPagination.totalCount,
                 });
-            });
+            }
         },
     );
 
@@ -96,6 +126,13 @@ const useSchoolMapData = (lang: SchoolLang) => {
                     return void 0;
                 }
 
+                if (staleCacheRef.current) {
+                    setMapState(
+                        staleCacheRef.current.sourceData,
+                        staleCacheRef.current.pagination,
+                    );
+                }
+
                 setError(nextError);
             } finally {
                 if (requestVersion === requestVersionRef.current) {
@@ -113,10 +150,22 @@ const useSchoolMapData = (lang: SchoolLang) => {
         const requestVersion: number = requestVersionRef.current;
 
         setError(null);
-        setSourceData(createEmptySourceData());
-        setPagination(createEmptyPaginationState());
+        staleCacheRef.current = null;
+        setMapState(createEmptySourceData(), createEmptyPaginationState());
 
-        void loadPage(void 0, true, requestVersion);
+        void (async (): Promise<void> => {
+            const cachedData = await getCachedSchoolMapData(lang);
+
+            if (requestVersion !== requestVersionRef.current) return void 0;
+
+            if (cachedData?.isFresh) {
+                setMapState(cachedData.sourceData, cachedData.pagination);
+                return void 0;
+            }
+
+            staleCacheRef.current = cachedData;
+            await loadPage(void 0, true, requestVersion);
+        })();
 
         return (): void => {
             requestVersionRef.current += 1;
