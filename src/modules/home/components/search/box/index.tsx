@@ -120,7 +120,7 @@ const SearchInput = styled.TextInput<{
     height: 48,
     fontSize: 16,
     lineHeight: 20,
-    padding: 16,
+    padding: (48 - 20) / 2,
     color: $colors.text,
     outlineStyle: "none",
 }));
@@ -128,22 +128,22 @@ const SearchInput = styled.TextInput<{
 const ActionArea = styled.View({
     width: 48,
     height: 48,
+    alignItems: "center",
+    justifyContent: "center",
 });
 
 const ClearButton = styled.Pressable({
     cursor: "pointer",
-    marginTop: 4,
-    marginRight: 4,
-    marginLeft: 4,
     width: 40,
     height: 40,
     borderRadius: 100,
+    alignItems: "center",
+    justifyContent: "center",
 });
 
 const ClearIcon = styled(X)<{
     $colors: Colors;
 }>(({ $colors }) => ({
-    padding: 8,
     width: 24,
     height: 24,
     color: $colors.textSecondary,
