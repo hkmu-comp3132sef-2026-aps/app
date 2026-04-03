@@ -29,7 +29,9 @@ jobs:
             - name: Setup EAS
               uses: expo/expo-github-action@v8
               with:
-                  expeas-version: latest
+                  expo-version: 55
+                  eas-version: latest
+                  packager: pnpm
                   token: ${{ secrets.EXPO_TOKEN }}
 
             - name: Build

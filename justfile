@@ -33,7 +33,7 @@ up:
 prebuild:
     {{expo}} prebuild
 
-# Prepare gqty
+# Prepare GQty
 gqty:
     {{gqty}} \
         --react \
@@ -41,7 +41,7 @@ gqty:
         --typescript \
         https://sch-api.alpheus.day/graphql
 
-# Prepare intlayer
+# Prepare Intlayer
 int:
     {{intlayer}} build
 

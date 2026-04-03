@@ -27,5 +27,11 @@ jobs:
             - name: Install typos-cli
               run: brew install typos-cli
 
+            - name: Prepare GQty
+              run: just gqty
+
+            - name: Prepare Intlayer
+              run: just int
+
             - name: Run linters
               run: just lint && just lint-biome
