@@ -1,0 +1,36 @@
+# yaml-language-server: $schema=https://www.schemastore.org/github-workflow.json
+
+name: Build
+
+on:
+    pull_request:
+        branches:
+            - main
+    push:
+        branches:
+            - main
+
+jobs:
+    # Android
+    android:
+        name: Android
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v6
+
+            - name: Install just
+              uses: extractions/setup-just@v3
+
+            - name: Setup Node
+              uses: alpheusci/setup-node@v1
+
+            - name: Setup EAS
+              uses: expo/expo-github-action@v8
+              with:
+                  expeas-version: latest
+                  token: ${{ secrets.EXPO_TOKEN }}
+
+            - name: Build
+              run: just android
