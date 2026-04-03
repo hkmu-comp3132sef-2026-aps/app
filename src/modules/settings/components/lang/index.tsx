@@ -18,29 +18,33 @@ const SettingsLang = (): React.JSX.Element => {
     const { settings } = useIntlayer("common");
 
     return (
-        <Container $colors={colors}>
+        <>
             <Title $colors={colors}>{settings.lang.title}</Title>
-            {availableLocales.map(
-                (locale: LocalesValues): React.JSX.Element => (
-                    <Option
-                        key={locale}
-                        $colors={colors}
-                        onPress={(): void => setLocale(locale)}
-                        style={({ pressed }): ViewStyle[] => [
-                            {
-                                backgroundColor: pressed
-                                    ? colors.bg3
-                                    : "transparent",
-                            },
-                        ]}
-                    >
-                        <OptionText $colors={colors}>
-                            {getLocaleLabel(locale)}
-                        </OptionText>
-                    </Option>
-                ),
-            )}
-        </Container>
+            <Container $colors={colors}>
+                {availableLocales.map(
+                    (locale: LocalesValues): React.JSX.Element => (
+                        <Option
+                            key={locale}
+                            $colors={colors}
+                            onPress={(): void => setLocale(locale)}
+                            style={({ hovered, pressed }): ViewStyle[] => [
+                                {
+                                    backgroundColor: pressed
+                                        ? colors.bg4
+                                        : hovered
+                                          ? colors.bg3
+                                          : "transparent",
+                                },
+                            ]}
+                        >
+                            <OptionText $colors={colors}>
+                                {getLocaleLabel(locale)}
+                            </OptionText>
+                        </Option>
+                    ),
+                )}
+            </Container>
+        </>
     );
 };
 
@@ -49,7 +53,7 @@ const Container = styled.View<{
 }>((props) => ({
     width: "100%",
     backgroundColor: props.$colors.bg2,
-    borderRadius: "16px",
+    borderRadius: 16,
     overflow: "hidden",
 }));
 
@@ -59,7 +63,9 @@ const Title = styled.Text<{
     lineHeight: 24,
     fontSize: 20,
     fontWeight: "bold",
-    padding: 16,
+    paddingTop: 16,
+    paddingLeft: 8,
+    paddingBottom: 16,
     color: props.$colors.text,
 }));
 

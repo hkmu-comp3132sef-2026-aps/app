@@ -331,9 +331,13 @@ export default (): React.JSX.Element => {
             <CloseButton
                 $colors={colors}
                 onPress={(): void => router.dismiss()}
-                style={({ pressed }): ViewStyle[] => [
+                style={({ hovered, pressed }): ViewStyle[] => [
                     {
-                        backgroundColor: pressed ? colors.bg3 : colors.bg2,
+                        backgroundColor: pressed
+                            ? colors.bg4
+                            : hovered
+                              ? colors.bg3
+                              : colors.bg2,
                     },
                 ]}
             >
@@ -441,8 +445,8 @@ const Description = styled.Text<{
 const SectionTitle = styled.Text<{
     $colors: Colors;
 }>((props) => ({
-    marginBottom: 8,
-    marginLeft: 4,
+    marginLeft: 8,
+    marginBottom: 20,
     fontSize: 18,
     fontWeight: "700",
     color: props.$colors.text,

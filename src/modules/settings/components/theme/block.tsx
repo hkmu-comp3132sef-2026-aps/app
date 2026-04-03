@@ -22,9 +22,13 @@ const ThemeBlock = (props: ThemeBlockProps): React.JSX.Element => {
         <Option
             $colors={colors}
             onPress={(): void => setMode(props.value)}
-            style={({ pressed }): ViewStyle[] => [
+            style={({ hovered, pressed }): ViewStyle[] => [
                 {
-                    backgroundColor: pressed ? colors.bg3 : "transparent",
+                    backgroundColor: pressed
+                        ? colors.bg4
+                        : hovered
+                          ? colors.bg3
+                          : "transparent",
                 },
             ]}
         >

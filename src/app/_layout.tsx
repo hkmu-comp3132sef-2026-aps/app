@@ -31,7 +31,7 @@ const StackLayout = (): React.JSX.Element => {
                 name="schools/[id]"
                 options={{
                     presentation: "formSheet",
-                    sheetCornerRadius: 16,
+                    sheetCornerRadius: 32,
                 }}
             />
         </Stack>
