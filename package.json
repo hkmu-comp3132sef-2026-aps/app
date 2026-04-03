@@ -5,6 +5,9 @@
         "#/*": "./src/*"
     },
     "main": "./src/index.ts",
+    "scripts": {
+        "build": "gqty --react --target ./.gqty/index.ts --typescript https://sch-api.alpheus.day/graphql && intlayer build && expo export --platform web --clear && node ./scripts/minify.ts"
+    },
     "browserslist": [
         "fully supports es6-module"
     ],
