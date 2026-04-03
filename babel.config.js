@@ -6,6 +6,12 @@ module.exports = (api) => {
         presets: [
             "babel-preset-expo",
         ],
+        plugins: [
+            "@babel/plugin-transform-template-literals",
+        ],
+        assumptions: {
+            mutableTemplateObject: true,
+        },
         overrides: [
             {
                 test: [

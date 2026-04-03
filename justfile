@@ -29,6 +29,10 @@ fix:
 up:
     pnpm up --interactive --latest --recursive
 
+# Expo prebuild
+prebuild:
+    {{expo}} prebuild
+
 # Prepare gqty
 gqty:
     {{gqty}} \
@@ -43,6 +47,7 @@ int:
 
 # Prepare dependencies
 pre:
+    just prebuild
     just gqty
     just int
 
@@ -81,9 +86,18 @@ check:
 dev:
     {{expo}} start --clear --port 3001
 
-# Build for web
+# Web export
 web:
     {{expo}} export --platform web --clear
+
+# Web minify
+minify:
+    node ./scripts/minify.ts
+
+# Build for Web
+build:
+    just web
+    just minify
 
 # Start web preview
 preview:
