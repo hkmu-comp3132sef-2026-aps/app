@@ -135,6 +135,8 @@ clean-all-linux:
     rm -rf ./.expo
     rm -rf ./.intlayer
     rm -rf ./.gqty
+    rm -rf ./android
+    rm -rf ./ios
     rm -rf ./node_modules
 
 # Clean everything (macOS)
@@ -149,6 +151,8 @@ clean-all-windows:
     Remove-Item -Recurse -Force ./.expo
     Remove-Item -Recurse -Force ./.intlayer
     Remove-Item -Recurse -Force ./.gqty
+    Remove-Item -Recurse -Force ./android
+    Remove-Item -Recurse -Force ./ios
     Remove-Item -Recurse -Force ./node_modules
 
 # Clean everything

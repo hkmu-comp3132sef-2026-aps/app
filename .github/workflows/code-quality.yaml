@@ -33,5 +33,8 @@ jobs:
             - name: Prepare Intlayer
               run: just int
 
+            - name: Generate Expo types
+              run: echo '/// <reference types="expo/types" />' > expo-env.d.ts
+
             - name: Run linters
               run: just lint && just lint-biome
