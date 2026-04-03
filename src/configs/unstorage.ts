@@ -1,9 +1,9 @@
 import { createStorage } from "unstorage";
 
-import { asyncStorageDriver } from "#/utils/async-storage-driver";
+import { storageDriver } from "#/utils/unstorage/mmkv";
 
 const storage = createStorage({
-    driver: asyncStorageDriver({
+    driver: storageDriver({
         id: "sch",
     }),
 });
