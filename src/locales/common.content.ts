@@ -10,6 +10,20 @@ const translation = {
                 en: "Home",
                 "zh-HK": "首頁",
             }),
+            search: {
+                title: t({
+                    en: "Search",
+                    "zh-HK": "搜尋",
+                }),
+                loading: t({
+                    en: "Searching schools...",
+                    "zh-HK": "正在搜尋學校...",
+                }),
+                empty: t({
+                    en: "No schools found.",
+                    "zh-HK": "找不到符合條件的學校。",
+                }),
+            },
         },
         settings: {
             title: t({

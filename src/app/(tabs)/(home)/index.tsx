@@ -16,6 +16,7 @@ import { useThemeContext } from "#/contexts/theme";
 import { useColors } from "#/hooks/colors";
 import { useSchoolLang } from "#/hooks/school-lang";
 import HomeMap from "#/modules/home/components/map";
+import { HomeSearch } from "#/modules/home/components/search";
 
 export default (): React.JSX.Element => {
     const router: Router = useRouter();
@@ -31,11 +32,14 @@ export default (): React.JSX.Element => {
     };
 
     return (
-        <HomeMap
-            theme={theme}
-            colors={colors}
-            lang={lang}
-            onClick={onClick}
-        />
+        <>
+            <HomeMap
+                theme={theme}
+                colors={colors}
+                lang={lang}
+                onClick={onClick}
+            />
+            <HomeSearch />
+        </>
     );
 };
